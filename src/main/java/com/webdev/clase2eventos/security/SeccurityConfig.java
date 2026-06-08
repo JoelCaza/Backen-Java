@@ -57,7 +57,7 @@ public class SeccurityConfig {
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 
         // Cabeceras permitidas
-        configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
+        configuration.setAllowedHeaders(List.of("*"));
 
         // Permitir envío de credenciales/tokens
         configuration.setAllowCredentials(true);
