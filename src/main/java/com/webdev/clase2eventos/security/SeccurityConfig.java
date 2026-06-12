@@ -41,6 +41,10 @@ public class SeccurityConfig {
                         .requestMatchers("/api/v1/categorias/**").permitAll()
                         .requestMatchers("/api/v1/productos/**").permitAll()
                         .requestMatchers("/api/v1/chat/**").permitAll()
+                        .requestMatchers("/api/v1/pedidos/**").permitAll()
+
+
+
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter , UsernamePasswordAuthenticationFilter.class);

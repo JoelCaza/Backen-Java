@@ -8,9 +8,13 @@ import com.webdev.clase2eventos.model.Usuario;
 import com.webdev.clase2eventos.repository.PedidoRepository;
 import com.webdev.clase2eventos.repository.ProductoRepostiroy;
 import com.webdev.clase2eventos.repository.UsuarioRepository;
+import com.webdev.clase2eventos.service.ProductoService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayInputStream;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -26,11 +30,27 @@ public class PedidoController {
     private final PedidoRepository pedidoRepository;
     private final UsuarioRepository usuarioRepository;
     private final ProductoRepostiroy productoRepostiroy;
+    private final ProductoService productoService;
 
-    public PedidoController(PedidoRepository pedidoRepository, UsuarioRepository usuarioRepository, ProductoRepostiroy productoRepostiroy) {
+    public PedidoController(PedidoRepository pedidoRepository, UsuarioRepository usuarioRepository, ProductoRepostiroy productoRepostiroy, ProductoService productoService) {
         this.pedidoRepository = pedidoRepository;
         this.usuarioRepository = usuarioRepository;
         this.productoRepostiroy = productoRepostiroy;
+        this.productoService = productoService;
+    }
+    
+    @GetMapping("/reporte-pdf")
+    public ResponseEntity<byte[]> descargarReporte() {
+        ByteArrayInputStream bis = productoService.generarReportePedidos();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=reporte-pedidos.pdf");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(bis.readAllBytes());
     }
 
     @PostMapping("/checkout")
